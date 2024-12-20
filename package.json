@@ -1,0 +1,37 @@
+{
+  "name": "diamondschools-student",
+  "version": "1.0.0",
+  "description": "A comprehensive student dashboard for Diamond Schools",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Chisom-Joseph/diamondschools-student.git"
+  },
+  "keywords": [
+    "School",
+    "diamond",
+    "dashboard",
+    "admin",
+    "template",
+    "website",
+    "ejs",
+    "nodejs",
+    "js",
+    "html",
+    "css",
+    "theme",
+    "aceternityui",
+    "shadcnui",
+    "tailwindcss"
+  ],
+  "author": "Smikedigital limited",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Chisom-Joseph/diamondschools-student/issues"
+  },
+  "homepage": "https://github.com/Chisom-Joseph/diamondschools-student#readme"
+}
