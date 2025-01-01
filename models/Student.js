@@ -87,7 +87,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     dateOfBirth: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,

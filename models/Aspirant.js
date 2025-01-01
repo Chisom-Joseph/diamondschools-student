@@ -94,7 +94,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     dateOfBirth: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -122,6 +122,14 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
       },
+    },
+    isStudent: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        notEmpty: true,
+      },
+      defaultValue: undefined,
     },
     lastAccess: {
       type: DataTypes.STRING,
