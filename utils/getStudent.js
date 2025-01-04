@@ -7,10 +7,6 @@ module.exports = async (id) => {
     if (!studentFromDb) return {};
     const student = studentFromDb.dataValues;
 
-    student.profileImageUrl = student.profileImageUrl
-      ? `${process.env.MAIN_WEBSITE_URL}/${student.profileImageUrl}`
-      : "/img/avatars/default.png";
-
     // Get guardian
     student.guardian = await require("./getGuardian")(student.GuardianId);
 
