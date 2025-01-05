@@ -29,7 +29,6 @@ module.exports = async (req, res, next) => {
     }
 
     const student = await require("../utils/getStudent")(tokenVerified.id);
-    console.log(student);
 
     if (Object.keys(student).length === 0) {
       res.clearCookie("sToken");
