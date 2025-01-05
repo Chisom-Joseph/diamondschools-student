@@ -1,0 +1,106 @@
+<%- include("../partials/header") %>
+<style>
+  /* Hide desktop table on mobile */
+  @media (max-width: 768px) {
+    .desktop-table {
+      display: none;
+    }
+  }
+
+  /* Hide mobile tables on desktop */
+  @media (min-width: 769px) {
+    .mobile-table {
+      display: none;
+    }
+  }
+
+  /* Bold time column on desktop */
+  .desktop-table tbody td:first-child {
+    font-weight: bold;
+  }
+</style>
+<main class="content">
+  <div class="container-fluid p-0">
+
+    <h1 class="h3 mb-3">Profile</h1>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+
+            <h5 class="card-title mb-0">Profile Details</h5>
+          </div>
+          <div class="card-body h-100">
+            <!-- Desktop Table View -->
+            <div class="table-responsive desktop-table">
+              <table class="table table-bordered table-striped">
+                <thead class="table-dark text-center">
+                  <tr>
+                    <th>Time</th>
+                    <% days.forEach(day => { %>
+                    <th><%= day %></th>
+                    <% }); %>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% schedule.forEach(slot => { %>
+                  <tr>
+                    <td><%= slot.time %></td>
+                    <% slot.subjects.forEach(subject => { %>
+                    <td><%= subject %></td>
+                    <% }); %>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Mobile View (Individual Day Tables) -->
+            <div class="mobile-table">
+              <% days.forEach((day, dayIndex) => { %>
+              <table class="table table-bordered table-striped mb-4">
+                <thead class="table-dark">
+                  <tr>
+                    <th colspan="2" class="text-center"><%= day %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% schedule.forEach(slot => { %>
+                  <tr>
+                    <td><strong><%= slot.time %></strong></td>
+                    <td><%= slot.subjects[dayIndex] %></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+              <% }); %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+<!-- Modal -->
+<div class="modal fade" id="centeredModalPrimary" tabindex="-1" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="?action=make-student" method="POST">
+        <div class="modal-header">
+          <h5 class="modal-title">Make Student</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body m-3">
+          <p class="mb-0">Are you sure you want to make <b><%- student.firstName %> <%- student.middleName %> <%- student.lastName %></b> a student?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-success">Yes, Make student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%- include("../partials/footer") %>
