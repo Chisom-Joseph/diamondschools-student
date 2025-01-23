@@ -9,6 +9,7 @@ const Timetable = require("./Timetable");
 const Guardian = require("./Guardian");
 const Religion = require("./Religion");
 const Aspirant = require("./Aspirant");
+const Subject = require("./Subject");
 const DisabledFeatures = require("./DisabledFeature");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
@@ -42,6 +43,7 @@ db.Timetable = Timetable(sequelize, DataTypes);
 db.Guardian = Guardian(sequelize, DataTypes);
 db.Religion = Religion(sequelize, DataTypes);
 db.Aspirant = Aspirant(sequelize, DataTypes);
+db.Subject = Subject(sequelize, DataTypes);
 db.DisabledFeatures = DisabledFeatures(sequelize, DataTypes);
 
 // Relations
@@ -62,5 +64,8 @@ db.Class.hasMany(db.Aspirant);
 
 db.Timetable.belongsTo(db.Class);
 db.Class.hasMany(db.Timetable);
+
+db.Subject.belongsTo(db.Class);
+db.Class.hasMany(db.Subject);
 
 module.exports = db;
