@@ -42,9 +42,17 @@ router.get("/notifications", async (req, res) => {
       include: [
         {
           model: Notification,
-          through: { attributes: [] },
+          through: {
+            model: UserNotification,
+            attributes: ["seen"], // Include the `seen` attribute
+          },
         },
       ],
+    });
+
+    userNotifications.Notifications.forEach((notification) => {
+      notification.UserNotification.seen;
+      notification.seen = notification.UserNotification.seen;
     });
 
     // Update seen status to true (optional, only when the student views the notification)
