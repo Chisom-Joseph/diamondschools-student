@@ -11,6 +11,12 @@ const Religion = require("./Religion");
 const Aspirant = require("./Aspirant");
 const Subject = require("./Subject");
 const DisabledFeatures = require("./DisabledFeature");
+const AttemptedSubject = require("./AttemptedSubject");
+const Question = require("./Question");
+const Option = require("./Option");
+const OptionName = require("./OptionName");
+const Notification = require("./Notification");
+const UserNotification = require("./UserNotification");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -45,6 +51,12 @@ db.Religion = Religion(sequelize, DataTypes);
 db.Aspirant = Aspirant(sequelize, DataTypes);
 db.Subject = Subject(sequelize, DataTypes);
 db.DisabledFeatures = DisabledFeatures(sequelize, DataTypes);
+db.AttemptedSubject = AttemptedSubject(sequelize, DataTypes);
+db.Question = Question(sequelize, DataTypes);
+db.Option = Option(sequelize, DataTypes);
+db.OptionName = OptionName(sequelize, DataTypes);
+db.Notification = Notification(sequelize, DataTypes);
+db.UserNotification = UserNotification(sequelize, DataTypes);
 
 // Relations
 db.Student.belongsTo(db.Class);
@@ -67,5 +79,47 @@ db.Class.hasMany(db.Timetable);
 
 db.Subject.belongsTo(db.Class);
 db.Class.hasMany(db.Subject);
+
+db.AttemptedSubject.belongsTo(db.Subject);
+db.Subject.hasMany(db.AttemptedSubject);
+
+db.AttemptedSubject.belongsTo(db.Aspirant);
+db.Aspirant.hasMany(db.AttemptedSubject);
+
+db.AttemptedSubject.belongsTo(db.Student);
+db.Student.hasMany(db.AttemptedSubject);
+
+db.Question.belongsTo(db.Subject);
+db.Subject.hasMany(db.Question);
+
+db.Option.belongsTo(db.Question);
+db.Question.hasMany(db.Option);
+
+// db.Student.belongsToMany(db.Notification, { through: db.UserNotification });
+// db.Aspirant.belongsToMany(db.Notification, { through: db.UserNotification });
+// db.Notification.belongsToMany(db.Student, { through: db.UserNotification });
+// db.Notification.belongsToMany(db.Aspirant, { through: db.UserNotification });
+
+db.Student.belongsToMany(db.Notification, {
+  through: db.UserNotification,
+  foreignKey: "StudentId",
+});
+
+db.Aspirant.belongsToMany(db.Notification, {
+  through: db.UserNotification,
+  foreignKey: "AspirantId",
+});
+
+db.Notification.belongsToMany(db.Student, {
+  through: db.UserNotification,
+  foreignKey: "NotificationId",
+  targetKey: "id", // 👈 Ensure it correctly maps to UUID
+});
+
+db.Notification.belongsToMany(db.Aspirant, {
+  through: db.UserNotification,
+  foreignKey: "NotificationId",
+  targetKey: "id",
+});
 
 module.exports = db;
