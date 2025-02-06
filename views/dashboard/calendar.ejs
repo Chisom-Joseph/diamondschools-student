@@ -1,0 +1,90 @@
+<%- include("../partials/header") %>
+<main class="content">
+  <div class="container-fluid p-0">
+
+    <div class="mb-3">
+      <h1 class="h3 d-inline align-middle">Calendar</h1><a class="badge ms-2 bg-primary" href="https://adminkit.io/pricing/" target="_blank">Pro Component <i class="fas fa-fw fa-external-link-alt"></i></a>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <h5 class="card-title">FullCalendar</h5>
+        <h6 class="card-subtitle text-muted">All activities for the year.</h6>
+      </div>
+      <div class="card-body">
+        <div id="fullcalendar"></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/js/fullcalendar.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    var calendarEl = document.getElementById("fullcalendar");
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      themeSystem: "bootstrap",
+      initialView: "dayGridMonth",
+      initialDate: "2025-02-02",
+      headerToolbar: {
+        left: "prev,next today",
+        center: "title",
+        right: "dayGridMonth,timeGridWeek,timeGridDay"
+      },
+      events: [{
+          title: "All Day Event",
+          start: "2025-02-01"
+        },
+        {
+          title: "Long Event",
+          start: "2025-02-02",
+          end: "2025-02-10"
+        },
+        {
+          groupId: "999",
+          title: "Repeating Event",
+          start: "2025-02-09T16:00:00"
+        },
+        {
+          groupId: "999",
+          title: "Repeating Event",
+          start: "2025-02-16T16:00:00"
+        },
+        {
+          title: "Conference",
+          start: "2025-02-11",
+          end: "2025-02-13"
+        },
+        {
+          title: "Meeting",
+          start: "2025-02-12T10:30:00",
+          end: "2025-02-12T12:30:00"
+        },
+        {
+          title: "Lunch",
+          start: "2025-02-12T12:00:00"
+        },
+        {
+          title: "Meeting",
+          start: "2025-02-12T14:30:00"
+        },
+        {
+          title: "Birthday Party",
+          start: "2025-02-13T02:00:00"
+        },
+        {
+          title: "Click for Google",
+          url: "http://google.com/",
+          start: "2025-02-28"
+        }
+      ]
+    });
+    setTimeout(function() {
+      calendar.render();
+    }, 250)
+  });
+</script>
+<%- include("../partials/footer") %>

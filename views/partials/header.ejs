@@ -39,9 +39,18 @@
 
         <ul class="sidebar-nav">
           <li class="sidebar-header">
-            Students
+            Info
           </li>
 
+          <!-- Notification -->
+          <li class="sidebar-item <%= currentPath === '/dashboard/notifications' ? 'active' : '' %>">
+            <a class="sidebar-link" href="/dashboard/notifications">
+              <i class="align-middle" data-feather="bell"></i>
+              <span class="align-middle">Notifications</span>
+            </a>
+          </li>
+          
+          <!-- Profile -->
           <li class="sidebar-item <%= currentPath === '/dashboard/profile' ? 'active' : '' %>">
             <a class="sidebar-link" href="/dashboard/profile">
               <i class="align-middle" data-feather="user"></i>
@@ -49,6 +58,15 @@
             </a>
           </li>
 
+          <!-- Calendar -->
+          <li class="sidebar-item <%= currentPath === '/dashboard/calendar' ? 'active' : '' %>">
+            <a class="sidebar-link" href="/dashboard/calendar">
+              <i class="align-middle" data-feather="calendar"></i>
+              <span class="align-middle">Calendar</span>
+            </a>
+          </li>
+          
+          <!-- Logout -->
           <li class="sidebar-item">
             <a class="sidebar-link" data-bs-toggle="modal" data-bs-target="#logout">
               <i class="align-middle" data-feather="log-out"></i>
