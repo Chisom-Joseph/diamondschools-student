@@ -30,6 +30,11 @@ router.get("/timetables", async (req, res) => {
   });
 });
 
+// Profile
+router.get("/calendar", async (req, res) => {
+  res.render("dashboard/calendar");
+});
+
 router.get("/notifications", async (req, res) => {
   const { UserNotification, Notification, Student } = require("../models");
   try {
