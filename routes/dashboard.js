@@ -8,11 +8,13 @@ router.get("/", (req, res) => {
 
 // Profile
 router.get("/profile", async (req, res) => {
-  console.log(await require("../utils/getSubjects")(req.student.ClassId));
+  console.log(
+    await require("../utils/getSubjectsByClass")(req.student.ClassId)
+  );
   res.render("dashboard/profile", {
     alert: req.flash("alert")[0] || "",
     form: req.flash("form")[0] || "",
-    subjects: await require("../utils/getSubjects")(req.student.ClassId),
+    subjects: await require("../utils/getSubjectsByClass")(req.student.ClassId),
   });
 });
 
