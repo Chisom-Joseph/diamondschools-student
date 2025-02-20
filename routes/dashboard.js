@@ -37,23 +37,10 @@ router.get("/calendar", async (req, res) => {
 
 // Profile
 router.get("/result", async (req, res) => {
-  const { Result, Subject } = require("../models");
-  const { term: termId } = req.query;
-
-  const results = await Result.findAll({
-    where: {
-      StudentId: req.student.id,
-      TermId: termId,
-    },
-    include: [
-      {
-        model: Subject,
-        attributes: ["id", "name"],
-      },
-    ],
-    order: [[Subject, "name", "ASC"]],
-  });
-
+  const results = await require("../utils/getResults")(
+    req.query.term,
+    req.student.id
+  );
   console.log(results);
 
   res.render("dashboard/result", {
