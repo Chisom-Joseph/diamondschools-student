@@ -18,12 +18,16 @@
           <hr class="my-0" />
           <div class="card-body">
             <h5 class="h6 card-title">Subjects</h5>
-            <a href="#" class="badge bg-primary me-1 my-1">English Language</a>
-            <a href="#" class="badge bg-primary me-1 my-1">Mathematics</a>
+            <% if(subjects) { %>
+            <% subjects.forEach(subject => { %>
+            <a href="#" class="badge bg-primary me-1 my-1"><%= subject.name %></a>
+            <% }) %>
+            <% } %>
+            <!-- <a href="#" class="badge bg-primary me-1 my-1">Mathematics</a>
             <a href="#" class="badge bg-primary me-1 my-1">Christian Religious Studies</a>
             <a href="#" class="badge bg-primary me-1 my-1">Cultural and Creative Arts</a>
             <a href="#" class="badge bg-primary me-1 my-1">Civic Education</a>
-            <a href="#" class="badge bg-primary me-1 my-1">Computer Science</a>
+            <a href="#" class="badge bg-primary me-1 my-1">Computer Science</a> -->
           </div>
         </div>
       </div>
