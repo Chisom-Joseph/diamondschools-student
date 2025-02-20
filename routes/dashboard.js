@@ -37,9 +37,30 @@ router.get("/calendar", async (req, res) => {
 
 // Profile
 router.get("/result", async (req, res) => {
+  const { Result, Subject } = require("../models");
+  const { term: termId } = req.query;
+
+  const results = await Result.findAll({
+    where: {
+      StudentId: req.student.id,
+      TermId: termId,
+    },
+    include: [
+      {
+        model: Subject,
+        attributes: ["id", "name"],
+      },
+    ],
+    order: [[Subject, "name", "ASC"]],
+  });
+
+  console.log(results);
+
   res.render("dashboard/result", {
     academicYears: await require("../utils/getAcademicYearsWithTerms")(),
     form: "",
+    selectedTerm: req.query.term,
+    results,
   });
 });
 

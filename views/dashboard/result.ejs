@@ -11,11 +11,11 @@
             <div class="row">
               <div class="col-md-6 col-xxl-4">
                 <div class="input-group">
-                  <select name="academic_term" id="academic_term" class="form-select">
+                  <select name="term" id="term" class="form-select">
                     <% academicYears.forEach((year) => { %>
                     <optgroup label="<%= year.year %>">
                       <% year.Terms.forEach((term) => { %>
-                      <option value="<%= term.id %>"><%= term.name %></option>
+                      <option value="<%= term.id %>" <%= selectedTerm === term.id ? "selected" : "" %>><%= term.name %></option>
                       <% }) %>
                     </optgroup>
                     <% }) %>
@@ -27,6 +27,7 @@
             </div>
           </div>
           <div class="card-body h-100">
+            <% if(results.length > 0) { %>
             <div class="table-responsive">
               <table class="table table-bordered table-striped">
                 <thead class="table-dark">
@@ -49,315 +50,31 @@
                   </tr>
                 </thead>
                 <tbody>
+                  <% results.map((result, index) => { %>
                   <tr>
-                    <td>1</td>
-                    <td>English Language</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td><%= ++index %></td>
+                    <td><%= result.Subject ? result.Subject.name : "N/A" %></td>
+                    <td><%= result.firstTest %></td>
+                    <td><%= result.presentation %></td>
+                    <td><%= result.midTermTest %></td>
+                    <td><%= result.project %></td>
+                    <td><%= result.note %></td>
+                    <td><%= result.examScore %></td>
+                    <td><%= result.totalScore %></td>
+                    <td><%= result.grade %></td>
+                    <td><%= result.position %></td>
+                    <td><%= result.classAverage %></td>
+                    <td><%= result.classLowest %></td>
+                    <td><%= result.classHighest %></td>
+                    <td><%= result.remark %></td>
                   </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Igbo Language</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>French Language</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Mathematics</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>5</td>
-                    <td>Basic Science</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>6</td>
-                    <td>Basic Technology</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>7</td>
-                    <td>Agricultural Science</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>8</td>
-                    <td>Business Education</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>9</td>
-                    <td>Home Economics</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>10</td>
-                    <td>Christian Religious Studies</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>11</td>
-                    <td>Civic Education</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>12</td>
-                    <td>ICT</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>13</td>
-                    <td>History</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>14</td>
-                    <td>Literature in English</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>15</td>
-                    <td>Physical & Health Education</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>16</td>
-                    <td>Social Studies</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>17</td>
-                    <td>Visual Arts</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                  <tr>
-                    <td>18</td>
-                    <td>Security Education</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                  </tr>
+                  <% }) %>
                 </tbody>
               </table>
             </div>
+            <% } else { %>
+            <p class="text-center">No Results found</p>
+            <% } %>
           </div>
         </div>
       </div>
@@ -366,4 +83,20 @@
 
   </div>
 </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const select = document.getElementById("term");
+
+    select.addEventListener("change", function() {
+      const selectedTermId = this.value;
+      let currentUrl = new URL(window.location.href);
+
+      currentUrl.searchParams.set("term", selectedTermId);
+      window.location.href = currentUrl.toString();
+
+    });
+  });
+</script>
+
 <%- include("../partials/footer") %>
