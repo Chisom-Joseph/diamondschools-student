@@ -49,7 +49,7 @@
               <span class="align-middle">Notifications</span>
             </a>
           </li>
-          
+
           <!-- Profile -->
           <li class="sidebar-item <%= currentPath === '/dashboard/profile' ? 'active' : '' %>">
             <a class="sidebar-link" href="/dashboard/profile">
@@ -65,7 +65,15 @@
               <span class="align-middle">Calendar</span>
             </a>
           </li>
-          
+
+          <!-- Result -->
+          <li class="sidebar-item <%= currentPath === '/dashboard/result' ? 'active' : '' %>">
+            <a class="sidebar-link" href="/dashboard/result">
+              <i class="align-middle" data-feather="calendar"></i>
+              <span class="align-middle">Result</span>
+            </a>
+          </li>
+
           <!-- Logout -->
           <li class="sidebar-item">
             <a class="sidebar-link" data-bs-toggle="modal" data-bs-target="#logout">
