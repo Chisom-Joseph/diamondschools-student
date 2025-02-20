@@ -53,5 +53,6 @@ module.exports = async () => {
   } catch (error) {
     console.error("ERROR TRYING TO GET TIMETABLES");
     console.error(error);
+    return {};
   }
 };
