@@ -24,5 +24,6 @@ module.exports = async (termId, studentId) => {
   } catch (error) {
     console.error("ERROR GETTING RESULTS");
     console.error(error);
+    return [];
   }
 };
