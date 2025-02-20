@@ -35,6 +35,14 @@ router.get("/calendar", async (req, res) => {
   res.render("dashboard/calendar");
 });
 
+// Profile
+router.get("/result", async (req, res) => {
+  res.render("dashboard/result", {
+    academicYears: await require("../utils/getAcademicYearsWithTerms")(),
+    form: "",
+  });
+});
+
 router.get("/notifications", async (req, res) => {
   const { UserNotification, Notification, Student } = require("../models");
   try {
