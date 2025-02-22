@@ -20,6 +20,7 @@ const UserNotification = require("./UserNotification");
 const AcademicYear = require("./AcademicYear");
 const Term = require("./Term");
 const Result = require("./Result");
+const ClassSubject = require("./ClassSubject");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -63,6 +64,7 @@ db.UserNotification = UserNotification(sequelize, DataTypes);
 db.AcademicYear = AcademicYear(sequelize, DataTypes);
 db.Term = Term(sequelize, DataTypes);
 db.Result = Result(sequelize, DataTypes);
+db.ClassSubject = ClassSubject(sequelize, DataTypes);
 
 // Relations
 db.Student.belongsTo(db.Class, { onDelete: "SET NULL" });
@@ -83,8 +85,20 @@ db.Class.hasMany(db.Aspirant, { onDelete: "SET NULL" });
 db.Timetable.belongsTo(db.Class, { onDelete: "SET NULL" });
 db.Class.hasMany(db.Timetable, { onDelete: "SET NULL" });
 
-db.Subject.belongsTo(db.Class, { onDelete: "SET NULL" }); // SUBJECT SHOULD NOT BELONG TO A CLASS
-db.Class.hasMany(db.Subject, { onDelete: "SET NULL" });
+// db.Subject.belongsTo(db.Class, { onDelete: "SET NULL" }); // SUBJECT SHOULD NOT BELONG TO A CLASS
+// db.Class.hasMany(db.Subject, { onDelete: "SET NULL" });
+
+db.Subject.belongsToMany(db.Class, {
+  through: db.ClassSubject,
+  foreignKey: "SubjectId",
+  onDelete: "CASCADE",
+});
+
+db.Class.belongsToMany(db.Subject, {
+  through: db.ClassSubject,
+  foreignKey: "ClassId",
+  onDelete: "CASCADE",
+});
 
 db.AttemptedSubject.belongsTo(db.Subject, { onDelete: "CASCADE" });
 db.Subject.hasMany(db.AttemptedSubject, { onDelete: "CASCADE" });
@@ -95,11 +109,17 @@ db.Aspirant.hasMany(db.AttemptedSubject, { onDelete: "CASCADE" });
 db.AttemptedSubject.belongsTo(db.Student, { onDelete: "CASCADE" });
 db.Student.hasMany(db.AttemptedSubject, { onDelete: "CASCADE" });
 
+db.AttemptedSubject.belongsTo(db.Term, { onDelete: "CASCADE" });
+db.Term.hasMany(db.AttemptedSubject, { onDelete: "CASCADE" });
+
 db.Question.belongsTo(db.Subject, { onDelete: "CASCADE" });
 db.Subject.hasMany(db.Question, { onDelete: "CASCADE" });
 
 db.Option.belongsTo(db.Question, { onDelete: "CASCADE" });
 db.Question.hasMany(db.Option, { onDelete: "CASCADE" });
+
+db.Question.belongsTo(db.Term, { onDelete: "CASCADE" });
+db.Term.hasMany(db.Question, { onDelete: "CASCADE" });
 
 db.Student.belongsToMany(db.Notification, {
   through: db.UserNotification,
@@ -138,10 +158,10 @@ db.Student.hasMany(db.Result, {
 });
 
 db.Result.belongsTo(db.Subject, {
-  onDelete: "SET NULL",
+  onDelete: "CASCADE",
 });
 db.Subject.hasMany(db.Result, {
-  onDelete: "SET NULL",
+  onDelete: "CASCADE",
 });
 
 db.Result.belongsTo(db.Term, {

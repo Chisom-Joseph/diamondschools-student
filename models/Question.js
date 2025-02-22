@@ -1,3 +1,5 @@
+const { ENUM } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   const Question = sequelize.define("Question", {
     id: {
@@ -22,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: false,
       },
+    },
+    for: {
+      type: ENUM("aspirant", "student", "all"),
+      allowNull: false,
+      validate: {
+        notEmpty: false,
+      },
+      defaultValue: "all",
     },
     date: {
       type: DataTypes.STRING,
