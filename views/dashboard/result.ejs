@@ -12,6 +12,7 @@
               <div class="col-md-6 col-xxl-4">
                 <div class="input-group">
                   <select name="term" id="term" class="form-select">
+                    <option disabled selected hidden>Select a Term</option>
                     <% academicYears.forEach((year) => { %>
                     <optgroup label="<%= year.year %>">
                       <% year.Terms.forEach((term) => { %>
