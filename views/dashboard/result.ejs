@@ -20,7 +20,11 @@
                 <% }) %>
               </select>
             </div>
-            <button id="printReport" class="btn btn-success" type="button">Print</button>
+            <% if(selectedTerm) { %>
+              <% if(results.length > 0) { %>
+                <button id="printReport" class="btn btn-success" type="button">Print</button>
+              <% } %>
+            <% } %>
           </div>
         </div>
       </div>
@@ -103,13 +107,13 @@
                 </tbody>
               </table>
             </div>
+            <p class="pt-3"><b>TEACHER'S REMARK:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.teachersRemark %></span></p>
             <% } else { %>
             <p class="text-center">No Results found</p>
             <% } %>
             <% } else { %>
             <p class="text-center">Please select a term to continue</p>
             <% } %>
-            <p class="pt-3"><b>TEACHER'S REMARK:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.teachersRemark %></span></p>
           </div>
         </div>
       </div>
