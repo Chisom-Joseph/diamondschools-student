@@ -3,6 +3,7 @@ const { Result, Subject, Student, ClassStats } = require("../models");
 module.exports = async (termId, studentId) => {
   try {
     if (!termId || !studentId) return [];
+    const toOrdinal = require("./toOrdinal")
 
     // Fetch results along with subject details
     const results = await Result.findAll({
@@ -44,6 +45,8 @@ module.exports = async (termId, studentId) => {
         classHighest: null,
         classAverage: null,
       };
+
+      if(result.position) result.position = toOrdinal(result.position)
     }
 
     return results;

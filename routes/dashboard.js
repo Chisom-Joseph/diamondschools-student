@@ -49,6 +49,7 @@ router.get("/result", async (req, res) => {
     term.AcademicYearId
   );
   const studentTermPerformance = await require("../utils/getStudentTermPerformance")({termId, studentId, classId: req.student.ClassId})
+  if(studentTermPerformance) studentTermPerformance.position = require("../utils/toOrdinal")(studentTermPerformance.position)
   const outOf = await require("../utils/getOutOf")({termId, classId: req.student.ClassId})
 
   res.render("dashboard/result", {
