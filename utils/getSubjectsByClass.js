@@ -1,15 +1,22 @@
-const { Subject } = require("../models");
+const { Class, Subject } = require("../models");
 
 module.exports = async (ClassId) => {
   try {
-    const subjects = await Subject.findAll({ where: { ClassId } });
+    if(!ClassId) return []
+    
+    const classWithSubjects  = await Class.findOne({
+      where: { id: ClassId },
+      include: {
+        model: Subject,
+        through: { attributes: [] }, // Exclude junction table data
+      },
+    });
 
-    if (subjects.length <= 0) return [];
+    if(classWithSubjects <= 0) return []
 
-    return subjects;
+    return classWithSubjects.Subjects || []
   } catch (error) {
-    console.error("ERROR GETTING SUBJECTS");
-    console.error(error);
+    console.error("ERROR GETTING SUBJECTS", error);
     return [];
   }
 };

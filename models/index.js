@@ -88,9 +88,6 @@ db.Class.hasMany(db.Aspirant, { onDelete: "SET NULL" });
 db.Timetable.belongsTo(db.Class, { onDelete: "SET NULL" });
 db.Class.hasMany(db.Timetable, { onDelete: "SET NULL" });
 
-// db.Subject.belongsTo(db.Class, { onDelete: "SET NULL" }); // SUBJECT SHOULD NOT BELONG TO A CLASS
-// db.Class.hasMany(db.Subject, { onDelete: "SET NULL" });
-
 db.Subject.belongsToMany(db.Class, {
   through: db.ClassSubject,
   foreignKey: "SubjectId",
