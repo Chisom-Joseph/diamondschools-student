@@ -41,22 +41,35 @@ router.get("/calendar", async (req, res) => {
 
 // Profile
 router.get("/result", async (req, res) => {
-  const results = await require("../utils/getResults")(
-    req.query.term,
-    req.student.id
+  const { term: termId } = req.query;
+  const { id: studentId } = req.student;
+  const results = await require("../utils/getResults")(termId, studentId);
+  const term = await require("../utils/getTerm")(termId);
+  const academicYear = await require("../utils/getAcademicYearByTerm")(
+    term.AcademicYearId
   );
-  console.log(results);
+  const studentTermPerformance = await require("../utils/getStudentTermPerformance")({termId, studentId, classId: req.student.ClassId})
+  const outOf = await require("../utils/getOutOf")({termId, classId: req.student.ClassId})
 
   res.render("dashboard/result", {
     academicYears: await require("../utils/getAcademicYearsWithTerms")(),
     form: "",
-    selectedTerm: req.query.term,
+    selectedTerm: termId,
     results,
+    academicYear,
+    term,
+    studentTermPerformance,
+    outOf
   });
 });
 
 router.get("/notifications", async (req, res) => {
-  const { UserNotification, Notification, Student } = require("../models");
+  const {
+    UserNotification,
+    Notification,
+    Student,
+    AcademicYear,
+  } = require("../models");
   try {
     // Assuming `req.user` contains the logged-in student
     const studentId = req.student.id;

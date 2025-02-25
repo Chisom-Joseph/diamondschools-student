@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Result = sequelize.define("Result", {
+  const ExamSettings = sequelize.define("ExamSettings", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -9,91 +9,60 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    firstTest: {
+    uniqueKey: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      allowNull: false,
+      unique: true,
+      defaultValue: 1,
+    },
+    duration: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    presentation: {
+    questionLimit: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    midTermTest: {
+    shuffleQuestions: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    shuffleOptions: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    markPerQuestion: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    project: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    note: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    examScore: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    totalScore: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    grade: {
+    startDate: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    position: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
-    },
-    remark: {
+    endDate: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         notEmpty: true,
       },
     },
-    date: {
+    startTime: {
       type: DataTypes.STRING,
-      defaultValue: Date.now(),
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      validate: { notEmpty: true },
     },
   });
-  return Result;
+  return ExamSettings;
 };

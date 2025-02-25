@@ -5,33 +5,62 @@
     <h1 class="h3 mb-3">Results</h1>
 
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-6 col-lg-4  col-xxl-4">
         <div class="card">
-          <div class="card-header pb-0">
-            <div class="row">
-              <div class="col-md-6 col-xxl-4">
-                <div class="input-group">
-                  <select name="term" id="term" class="form-select">
-                    <option disabled selected hidden>Select a Term</option>
-                    <% academicYears.forEach((year) => { %>
-                    <optgroup label="<%= year.year %>">
-                      <% year.Terms.forEach((term) => { %>
-                      <option value="<%= term.id %>" <%= selectedTerm === term.id ? "selected" : "" %>><%= term.name %></option>
-                      <% }) %>
-                    </optgroup>
-                    <% }) %>
-                  </select>
-
-                  <button class="btn btn-secondary" type="button">Search</button>
-                </div>
-              </div>
+          <div class="card-header">
+            <div class="input-group mb-3">
+              <select name="term" id="term" class="form-select">
+                <option disabled selected hidden>Select a Term</option>
+                <% academicYears.forEach((year) => { %>
+                <optgroup label="<%= year.year %>">
+                  <% year.Terms.forEach((term) => { %>
+                  <option value="<%= term.id %>" <%= selectedTerm === term.id ? "selected" : "" %>><%= term.name %></option>
+                  <% }) %>
+                </optgroup>
+                <% }) %>
+              </select>
             </div>
+            <button id="printReport" class="btn btn-success" type="button">Print</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12" id="printableArea">
+        <div class="card pt-4">
           <div class="card-body h-100">
             <% if(selectedTerm) { %>
-            <% if(results.length > 0) { %>
-            <div class="table-responsive">
-              <table class="table table-bordered table-striped">
+              <% if(results.length > 0) { %>
+              <div class="container text-center my-4 mb">
+                <!-- School Logo and Name -->
+                <div class="d-flex align-items-center justify-content-center">
+                    <img src="/img/logo/icon.png" alt="School Logo" class="rounded-circle border border-secondary me-3" width="90" height="90">
+                    <div>
+                        <h2 class="fw-bold text-uppercase text-primary">Diamond Secondary School Nkpor</h2>
+                        <p class="text-primary m-0">No. 7 Ernest Odili Crescent Nkpor-Agu, Anambra State.</p>
+                        <p class="fst-italic text-secondary">Motto: <span class="fw-semibold">Knowledge, Discipline and Services</span></p>
+                    </div>
+                </div>
+
+                <!-- Terminal Report Sheet Badge -->
+                <div class="mt-1 mb-5">
+                    <span class="badge bg-dark text-white fs-6 px-3 py-2">Terminal Report Sheet</span>
+                </div>
+              </div>
+              <div class="d-flex flex-wrap mb-3" style="gap: 1em 2em;">
+                <p><b>NAME:</b> <span class="border border-2 p-1 px-3"><%= student.firstName %> <%= student.middleName %> <%= student.lastName %></span></p>
+                <p><b>CLASS:</b> <span class="border border-2 p-1 px-3"><%= student.class.name %></span></p>
+                <p><b>TERM:</b> <span class="border border-2 p-1 px-3"><%= term.name %></span></p>
+                <p><b>YEAR:</b> <span class="border border-2 p-1 px-3"><%= academicYear.year %></span></p>
+                <p><b>TOTAL:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.totalScore %></span></p>
+                <p><b>AVERAGE:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.averageScore %></span></p>
+                <p><b>POSITION:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.position %></span></p>
+                <p><b>OUT OF:</b> <span class="border border-2 p-1 px-3"><%= outOf %></span></p>
+                <p><b>REMARK:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.overallRemark %></span></p>
+              </div>
+            <div class="custom-table-responsive" style="">
+              <table class="table table-bordered table-striped" style="width: 100%;">
                 <thead class="table-dark">
                   <tr>
                     <th class="vertical-header">No</th>
@@ -65,9 +94,9 @@
                     <td><%= result.totalScore %></td>
                     <td><%= result.grade %></td>
                     <td><%= result.position %></td>
-                    <td><%= result.classAverage %></td>
-                    <td><%= result.classLowest %></td>
-                    <td><%= result.classHighest %></td>
+                    <td><%= result.dataValues.classStats.classAverage %></td>
+                    <td><%= result.dataValues.classStats.classLowest %></td>
+                    <td><%= result.dataValues.classStats.classHighest %></td>
                     <td><%= result.remark %></td>
                   </tr>
                   <% }) %>
@@ -80,6 +109,7 @@
             <% } else { %>
             <p class="text-center">Please select a term to continue</p>
             <% } %>
+            <p class="pt-3"><b>TEACHER'S REMARK:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.teachersRemark %></span></p>
           </div>
         </div>
       </div>
@@ -103,5 +133,69 @@
     });
   });
 </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("term");
+    const printButton = document.getElementById("printReport");
+
+    // Handle term selection change
+    select.addEventListener("change", function () {
+      const selectedTermId = this.value;
+      let currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set("term", selectedTermId);
+      window.location.href = currentUrl.toString();
+    });
+
+    // Handle print button click
+    printButton.addEventListener("click", function () {
+      const printableArea = document.getElementById("printableArea").innerHTML;
+      const originalContent = document.body.innerHTML;
+      const tableContainer = document.querySelector(".custom-table-responsive");
+
+      console.log(tableContainer)
+      if (tableContainer) {
+        tableContainer.classList.remove("custom-table-responsive"); // Remove it for printing
+      }
+
+      document.body.innerHTML = printableArea;
+      window.print();
+      document.body.innerHTML = originalContent;
+      window.location.reload();
+    });
+  });
+</script>
+<style>
+  .custom-table-responsive {
+    overflow-x: auto
+  }
+
+  @media print {
+    @page {
+      size: A4 landscape; /* Forces landscape printing */
+      margin: 5mm; /* Reduce margins to fit more content */
+    }
+
+    body {
+      zoom: 80%; /* Keeps the content at normal size */
+      font-size: 12px; /* Ensure readability */
+    }
+
+    .custom-table-responsive table {
+      width: 100em;
+    }
+
+    table {
+      width: 100% !important;
+      table-layout: fixed; /* Ensures columns fit within width */
+    }
+
+    th, td {
+      white-space: normal !important; /* Allows text wrapping */
+      font-size: 10px; /* Adjusted for readability */
+      padding: 4px;
+    }
+  }
+</style>
 
 <%- include("../partials/footer") %>

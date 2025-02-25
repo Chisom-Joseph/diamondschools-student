@@ -21,15 +21,15 @@ const AcademicYear = require("./AcademicYear");
 const Term = require("./Term");
 const Result = require("./Result");
 const ClassSubject = require("./ClassSubject");
+const ExamSettings = require("./ExamSettings");
+const ClassStats = require("./ClassStats");
+const StudentTermPerformance = require("./StudentTermPerformance");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
   dialect: dbConfig.dialect,
   dialectOptions: {
     connectTimeout: 100000,
-  },
-  define: {
-    timestamps: false,
   },
   polli: {
     min: dbConfig.poll.min,
@@ -65,6 +65,9 @@ db.AcademicYear = AcademicYear(sequelize, DataTypes);
 db.Term = Term(sequelize, DataTypes);
 db.Result = Result(sequelize, DataTypes);
 db.ClassSubject = ClassSubject(sequelize, DataTypes);
+db.ExamSettings = ExamSettings(sequelize, DataTypes);
+db.ClassStats = ClassStats(sequelize, DataTypes);
+db.StudentTermPerformance = StudentTermPerformance(sequelize, DataTypes);
 
 // Relations
 db.Student.belongsTo(db.Class, { onDelete: "SET NULL" });
@@ -169,6 +172,48 @@ db.Result.belongsTo(db.Term, {
 });
 db.Term.hasMany(db.Result, {
   onDelete: "SET NULL",
+});
+
+db.ClassStats.belongsTo(db.Subject, {
+  onDelete: "CASCADE",
+});
+db.Subject.hasMany(db.ClassStats, {
+  onDelete: "CASCADE",
+});
+
+db.ClassStats.belongsTo(db.Term, {
+  onDelete: "CASCADE",
+});
+db.Term.hasMany(db.ClassStats, {
+  onDelete: "CASCADE",
+});
+
+db.ClassStats.belongsTo(db.Class, {
+  onDelete: "CASCADE",
+});
+db.Class.hasMany(db.ClassStats, {
+  onDelete: "CASCADE",
+});
+
+db.StudentTermPerformance.belongsTo(db.Student, {
+  onDelete: "CASCADE",
+});
+db.Student.hasMany(db.StudentTermPerformance, {
+  onDelete: "CASCADE",
+});
+
+db.StudentTermPerformance.belongsTo(db.Class, {
+  onDelete: "CASCADE",
+});
+db.Class.hasMany(db.StudentTermPerformance, {
+  onDelete: "CASCADE",
+});
+
+db.StudentTermPerformance.belongsTo(db.Term, {
+  onDelete: "CASCADE",
+});
+db.Term.hasMany(db.StudentTermPerformance, {
+  onDelete: "CASCADE",
 });
 
 module.exports = db;
