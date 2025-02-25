@@ -150,6 +150,13 @@ db.Notification.belongsToMany(db.Aspirant, {
 db.Term.belongsTo(db.AcademicYear, { onDelete: "CASCADE" });
 db.AcademicYear.hasMany(db.Term, { onDelete: "CASCADE" });
 
+db.Student.belongsTo(db.AcademicYear, { onDelete: "SET NULL" });
+db.AcademicYear.hasMany(db.Student, { onDelete: "SET NULL" });
+
+db.Aspirant.belongsTo(db.AcademicYear, { onDelete: "SET NULL" });
+db.AcademicYear.hasMany(db.Aspirant, { onDelete: "SET NULL" });
+
+
 db.Result.belongsTo(db.Student, {
   onDelete: "CASCADE",
 });
