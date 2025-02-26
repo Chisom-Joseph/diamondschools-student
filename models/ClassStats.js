@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     classAverage: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         notEmpty: true,
