@@ -153,13 +153,12 @@
       window.location.href = currentUrl.toString();
     });
 
-    // Handle print button click
-    printButton.addEventListener("click", function () {
+    // Print function
+    function printReport() {
       const printableArea = document.getElementById("printableArea").innerHTML;
       const originalContent = document.body.innerHTML;
       const tableContainer = document.querySelector(".custom-table-responsive");
 
-      console.log(tableContainer)
       if (tableContainer) {
         tableContainer.classList.remove("custom-table-responsive"); // Remove it for printing
       }
@@ -168,9 +167,21 @@
       window.print();
       document.body.innerHTML = originalContent;
       window.location.reload();
+    }
+
+    // Handle print button click
+    printButton.addEventListener("click", printReport);
+
+    // Add keyboard shortcut (Ctrl + P)
+    document.addEventListener("keydown", function (event) {
+      if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+        event.preventDefault(); // Prevent default print behavior
+        printReport();
+      }
     });
   });
 </script>
+
 <style>
   .custom-table-responsive {
     overflow-x: auto
