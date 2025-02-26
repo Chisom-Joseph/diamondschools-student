@@ -121,6 +121,9 @@ db.Question.hasMany(db.Option, { onDelete: "CASCADE" });
 db.Question.belongsTo(db.Term, { onDelete: "CASCADE" });
 db.Term.hasMany(db.Question, { onDelete: "CASCADE" });
 
+db.Question.belongsTo(db.Class, { onDelete: "CASCADE" });
+db.Class.hasMany(db.Question, { onDelete: "CASCADE" });
+
 db.Student.belongsToMany(db.Notification, {
   through: db.UserNotification,
   foreignKey: "StudentId",
@@ -155,7 +158,6 @@ db.AcademicYear.hasMany(db.Student, { onDelete: "SET NULL" });
 
 db.Aspirant.belongsTo(db.AcademicYear, { onDelete: "SET NULL" });
 db.AcademicYear.hasMany(db.Aspirant, { onDelete: "SET NULL" });
-
 
 db.Result.belongsTo(db.Student, {
   onDelete: "CASCADE",
