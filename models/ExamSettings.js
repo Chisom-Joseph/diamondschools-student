@@ -58,6 +58,13 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    aspirantExaminationDate: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
     startTime: {
       type: DataTypes.STRING,
       allowNull: false,

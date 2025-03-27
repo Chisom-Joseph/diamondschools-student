@@ -48,9 +48,28 @@ router.get("/result", async (req, res) => {
   const academicYear = await require("../utils/getAcademicYearByTerm")(
     term.AcademicYearId
   );
-  const studentTermPerformance = await require("../utils/getStudentTermPerformance")({termId, studentId, classId: req.student.ClassId})
-  if(studentTermPerformance) studentTermPerformance.position = require("../utils/toOrdinal")(studentTermPerformance.position)
-  const outOf = await require("../utils/getOutOf")({termId, classId: req.student.ClassId})
+  const studentTermPerformance =
+    await require("../utils/getStudentTermPerformance")({
+      termId,
+      studentId,
+      classId: req.student.ClassId,
+    });
+  if (studentTermPerformance)
+    studentTermPerformance.position = require("../utils/toOrdinal")(
+      studentTermPerformance.position
+    );
+  const outOf = await require("../utils/getOutOf")({
+    termId,
+    classId: req.student.ClassId,
+  });
+  const isFeatureEnabled = await require("../utils/checkFeatureAccess")(
+    "student-result-portal",
+    "student",
+    studentId
+  );
+  if (!isFeatureEnabled) {
+    return res.status(403).render("featureDisabled.ejs");
+  }
 
   res.render("dashboard/result", {
     academicYears: await require("../utils/getAcademicYearsWithTerms")(),
@@ -60,7 +79,7 @@ router.get("/result", async (req, res) => {
     academicYear,
     term,
     studentTermPerformance,
-    outOf
+    outOf,
   });
 });
 

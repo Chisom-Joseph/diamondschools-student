@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const DisabledFeatures = sequelize.define("DisabledFeatures", {
+  const FeatureFlag = sequelize.define("FeatureFlag", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -25,6 +25,19 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    userGroup: {
+      type: DataTypes.JSON,
+      defaultValue: [],
+      allowNull: false,
+      unique: true,
+      validate: {
+        isNotEmptyArray(value) {
+          if (!Array.isArray(value) || value.length === 0) {
+            throw new Error("userGroup cannot be empty");
+          }
+        },
+      },
+    },
   });
-  return DisabledFeatures;
+  return FeatureFlag;
 };

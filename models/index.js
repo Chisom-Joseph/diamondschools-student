@@ -24,6 +24,8 @@ const ClassSubject = require("./ClassSubject");
 const ExamSettings = require("./ExamSettings");
 const ClassStats = require("./ClassStats");
 const StudentTermPerformance = require("./StudentTermPerformance");
+const FeatureFlag = require("./FeatureFlag");
+const FeatureAccess = require("./FeatureAccess");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -68,6 +70,8 @@ db.ClassSubject = ClassSubject(sequelize, DataTypes);
 db.ExamSettings = ExamSettings(sequelize, DataTypes);
 db.ClassStats = ClassStats(sequelize, DataTypes);
 db.StudentTermPerformance = StudentTermPerformance(sequelize, DataTypes);
+db.FeatureFlag = FeatureFlag(sequelize, DataTypes);
+db.FeatureAccess = FeatureAccess(sequelize, DataTypes);
 
 // Relations
 db.Student.belongsTo(db.Class, { onDelete: "SET NULL" });
@@ -221,5 +225,8 @@ db.StudentTermPerformance.belongsTo(db.Term, {
 db.Term.hasMany(db.StudentTermPerformance, {
   onDelete: "CASCADE",
 });
+
+db.FeatureFlag.hasMany(db.FeatureAccess, { onDelete: "CASCADE" });
+db.FeatureAccess.belongsTo(db.FeatureFlag, { onDelete: "CASCADE" });
 
 module.exports = db;
