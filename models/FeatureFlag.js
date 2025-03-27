@@ -29,14 +29,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.JSON,
       defaultValue: [],
       allowNull: false,
-      unique: true,
-      validate: {
-        isNotEmptyArray(value) {
-          if (!Array.isArray(value) || value.length === 0) {
-            throw new Error("userGroup cannot be empty");
-          }
-        },
-      },
     },
   });
   return FeatureFlag;
