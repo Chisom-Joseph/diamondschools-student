@@ -38,6 +38,10 @@ module.exports = async (req, res, next) => {
     req.student = student;
     res.locals.student = student;
     res.locals.isLoggedin = true;
+    res.locals.isFeatureEnabled = await require("../utils/getEnabledFeatures")(
+      "student",
+      student.id
+    );
     return next();
   } catch (error) {
     console.error("ERROR VERIFING LOGIN");

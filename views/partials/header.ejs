@@ -66,6 +66,7 @@
             </a>
           </li>
 
+          <% if(isFeatureEnabled("student-result-portal")) { %>
           <!-- Result -->
           <li class="sidebar-item <%= currentPath === '/dashboard/result' ? 'active' : '' %>">
             <a class="sidebar-link" href="/dashboard/result">
@@ -73,6 +74,7 @@
               <span class="align-middle">Result</span>
             </a>
           </li>
+          <% } %>
 
           <!-- Logout -->
           <li class="sidebar-item">
