@@ -1,5 +1,4 @@
 <%- include("../partials/header") %>
-
 <main class="content">
   <div class="container-fluid p-0">
 
@@ -39,23 +38,23 @@
           <div class="card-body h-100">
             <% if(selectedTerm) { %>
             <% if(results.length > 0) { %>
-            <div class="container text-center mb-4 mb w-full">
+            <div class="container text-center my-4 mb">
               <!-- School Logo and Name -->
               <div class="d-flex align-items-center justify-content-center">
                 <img src="/img/logo/icon.png" alt="School Logo" class="rounded-circle border border-secondary me-3" width="90" height="90">
                 <div>
-                  <h2 class="fw-bold text-uppercase text-primary school-title text-4xl">Diamond Secondary School Nkpor</h2>
+                  <h2 class="fw-bold text-uppercase text-primary school-title">Diamond Secondary School Nkpor</h2>
                   <p class="text-primary m-0">No. 7 Ernest Odili Crescent Nkpor-Agu, Anambra State.</p>
                   <p class="fst-italic text-secondary">Motto: <span class="fw-semibold">Knowledge, Discipline and Services</span></p>
                 </div>
               </div>
 
               <!-- Terminal Report Sheet Badge -->
-              <div class="terminal-report-sheet mt-1 mb-">
-                <span class="badge bg-dark text-white px-3 py-2">Terminal Report Sheet</span>
+              <div class="mt-1 mb-5">
+                <span class="badge bg-dark text-white fs-6 px-3 py-2">Terminal Report Sheet</span>
               </div>
             </div>
-            <div class="d-flex flex-wrap gap-3 mb-3">
+            <div class="d-flex flex-wrap mb-3" style="gap: 1em 2em;">
               <p><b>NAME:</b> <span class="border border-2 p-1 px-3"><%= student.firstName %> <%= student.middleName %> <%= student.lastName %></span></p>
               <p><b>CLASS:</b> <span class="border border-2 p-1 px-3"><%= student.class.name %></span></p>
               <p><b>TERM:</b> <span class="border border-2 p-1 px-3"><%= term.name %></span></p>
@@ -66,32 +65,32 @@
               <p><b>OUT OF:</b> <span class="border border-2 p-1 px-3"><%= outOf %></span></p>
               <p><b>REMARK:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.overallRemark %></span></p>
             </div>
-            <div class="custom-table-responsive table-responsive">
-              <table class="table table-bordered table-striped">
+            <div class="custom-table-responsive" style="">
+              <table class="table table-bordered table-striped" style="width: 100%;">
                 <thead class="table-dark">
                   <tr>
-                    <th>No</th>
-                    <th class="subject-col">Subjects</th>
-                    <th>First Test (10)</th>
-                    <th>Presentation (5)</th>
-                    <th>Mid-term test (10)</th>
-                    <th>Project (10)</th>
-                    <th>Note (5)</th>
-                    <th>Exam score (60)</th>
-                    <th>Total score (100)</th>
-                    <th>Grade</th>
-                    <th>Position</th>
-                    <!-- <th>Class average</th> -->
-                    <th>Class lowest score</th>
-                    <th>Class highest score</th>
-                    <th>Remark</th>
+                    <th class="vertical-header">No</th>
+                    <th class="vertical-header">Subjects</th>
+                    <th class="vertical-header">First Test (10)</th>
+                    <th class="vertical-header">Presentation (5)</th>
+                    <th class="vertical-header">Mid-term test (10)</th>
+                    <th class="vertical-header">Project (10)</th>
+                    <th class="vertical-header">Note (5)</th>
+                    <th class="vertical-header">Exam score (60)</th>
+                    <th class="vertical-header">Total score (100)</th>
+                    <th class="vertical-header">Grade</th>
+                    <th class="vertical-header">Position</th>
+                    <!-- <th class="vertical-header">Class average</th> -->
+                    <th class="vertical-header">Class lowest score</th>
+                    <th class="vertical-header">Class highest score</th>
+                    <th class="vertical-header">Remark</th>
                   </tr>
                 </thead>
                 <tbody>
                   <% results.map((result, index) => { %>
                   <tr>
                     <td><%= ++index %></td>
-                    <td class="subject-col"><%= result.Subject ? result.Subject.name : "N/A" %></td>
+                    <td><%= result.Subject ? result.Subject.name : "N/A" %></td>
                     <td><%= result.firstTest %></td>
                     <td><%= result.presentation %></td>
                     <td><%= result.midTermTest %></td>
@@ -159,6 +158,7 @@
       window.location.href = currentUrl.toString();
     });
 
+    // Print function
     function printReport() {
       const printableArea = document.getElementById("printableArea").innerHTML;
       const originalContent = document.body.innerHTML;
@@ -178,17 +178,9 @@
             font-style: normal;
           }
           @media print {
-            @page { size: A4; margin: 5mm; }
-            body { width: 100%; height: 100%; font-size: 10px; overflow: visible !important; background-color: white }
-            html, body { overflow: visible !important; }
-            .school-title { font-family: 'AntonLocal', Impact, Charcoal, sans-serif !important; font-size: 2em !important; white-space: nowrap !important; margin: 0 !important; padding: 0 !important; }
-            table { width: 100% !important; font-size: 18px !important; border-collapse: collapse !important; }
-            th, td { padding: 4px !important; font-size: 12px !important; vertical-align: top !important; }
-            thead th { font-size: 10px !important; }
-            .table-responsive { all: unset; height: auto !important; overflow: visible !important; }
-            p { margin: 0 !important; padding: 0 !important; }
-            img { width: 50px !important; height: 50px !important; }
-            .terminal-report-sheet {margin-bottom: 2em; margin-top: 4em}
+           @page { size: A4; }
+          body { background-color: white; }
+            .school-title { font-size: 2em !important; white-space: nowrap !important; margin: 0 !important; padding: 0 !important; }
           }
         </style>
         ${printableArea}
@@ -204,6 +196,7 @@
 
     document.addEventListener("keydown", function(event) {
       if ((event.ctrlKey || event.metaKey) && event.key === "p") {
+        event.preventDefault();
         printReport();
       }
     });
@@ -211,12 +204,40 @@
 </script>
 
 <style>
-  .school-title {
-    font-family: 'AntonLocal', Impact, Charcoal, sans-serif !important;
-    font-size: 2em !important;
-    white-space: nowrap !important;
-    margin: 0 !important;
-    padding: 0 !important;
+  .custom-table-responsive {
+    overflow-x: auto
+  }
+
+  @media print {
+    @page {
+      size: A4 landscape;
+      margin: 5mm;
+    }
+
+    body {
+      zoom: 80%;
+      font-size: 12px;
+    }
+
+    .custom-table-responsive table {
+      width: 100em;
+    }
+
+    table {
+      width: 100% !important;
+      table-layout: fixed;
+    }
+
+    th,
+    td {
+      white-space: normal !important;
+      font-size: 10px;
+      padding: 4px;
+    }
+
+    .school-title {
+      white-space: nowrap !important;
+    }
   }
 </style>
 
