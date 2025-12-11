@@ -181,6 +181,14 @@ db.Result.belongsTo(db.Term, {
 db.Term.hasMany(db.Result, {
   onDelete: "SET NULL",
 });
+db.Result.belongsTo(db.Class, {
+  foreignKey: "resultClassId",
+  onDelete: "SET NULL",
+});
+db.Class.hasMany(db.Result, {
+  foreignKey: "resultClassId",
+  onDelete: "SET NULL",
+});
 
 db.ClassStats.belongsTo(db.Subject, {
   onDelete: "CASCADE",

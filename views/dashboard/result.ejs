@@ -56,7 +56,7 @@
             </div>
             <div class="d-flex flex-wrap mb-3" style="gap: 1em 2em;">
               <p><b>NAME:</b> <span class="border border-2 p-1 px-3"><%= student.firstName %> <%= student.middleName %> <%= student.lastName %></span></p>
-              <p><b>CLASS:</b> <span class="border border-2 p-1 px-3"><%= student.class.name %></span></p>
+              <p><b>CLASS:</b> <span class="border border-2 p-1 px-3"><%= (displayClass && displayClass.name) ? displayClass.name : (student.class ? student.class.name : "") %></span></p>
               <p><b>TERM:</b> <span class="border border-2 p-1 px-3"><%= term.name %></span></p>
               <p><b>YEAR:</b> <span class="border border-2 p-1 px-3"><%= academicYear.year %></span></p>
               <p><b>TOTAL:</b> <span class="border border-2 p-1 px-3"><%= studentTermPerformance.totalScore %></span></p>

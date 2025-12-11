@@ -60,8 +60,11 @@ router.get("/result", async (req, res) => {
     );
   const outOf = await require("../utils/getOutOf")({
     termId,
-    classId: req.student.ClassId,
+    classId: studentTermPerformance?.ClassId || req.student.ClassId,
   });
+  const displayClass = await require("../utils/getClass")(
+    studentTermPerformance?.ClassId || req.student.ClassId
+  );
   const isFeatureEnabled = await require("../utils/checkFeatureAccess")(
     "student-result-portal",
     "student",
@@ -80,6 +83,7 @@ router.get("/result", async (req, res) => {
     term,
     studentTermPerformance,
     outOf,
+    displayClass,
   });
 });
 

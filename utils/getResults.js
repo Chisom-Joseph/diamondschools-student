@@ -22,17 +22,15 @@ module.exports = async (termId, studentId) => {
 
     if (results.length === 0) return [];
 
-    // Fetch student details to get ClassId
+    // Determine class at time of result; fallback to current student class
     const student = await Student.findByPk(studentId);
-    if (!student) return results; // If student not found, return results without class stats
-
-    const classId = student.ClassId;
+    const fallbackClassId = student ? student.ClassId : null;
 
     // Fetch ClassStats for each subject in the results
     for (const result of results) {
       const classStats = await ClassStats.findOne({
         where: {
-          ClassId: classId,
+          ClassId: result.resultClassId || fallbackClassId,
           SubjectId: result.SubjectId,
           TermId: termId,
         },
@@ -47,6 +45,7 @@ module.exports = async (termId, studentId) => {
       };
 
       if(result.position) result.position = toOrdinal(result.position)
+      result.dataValues.resultClassId = result.resultClassId || fallbackClassId;
     }
 
     return results;
