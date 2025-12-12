@@ -54,10 +54,8 @@ router.get("/result", async (req, res) => {
       studentId,
       classId: req.student.ClassId,
     });
-  if (studentTermPerformance)
-    studentTermPerformance.position = require("../utils/toOrdinal")(
-      studentTermPerformance.position
-    );
+  if (studentTermPerformance && studentTermPerformance.position != null)
+    studentTermPerformance.position = require("../utils/toOrdinal")(studentTermPerformance.position);
   const outOf = await require("../utils/getOutOf")({
     termId,
     classId: studentTermPerformance?.ClassId || req.student.ClassId,
@@ -83,6 +81,7 @@ router.get("/result", async (req, res) => {
     term,
     studentTermPerformance,
     outOf,
+    student: req.student,
     displayClass,
   });
 });

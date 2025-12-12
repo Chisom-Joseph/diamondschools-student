@@ -161,12 +161,8 @@ db.AcademicYear.hasMany(db.Student, { onDelete: "SET NULL" });
 db.Aspirant.belongsTo(db.AcademicYear, { onDelete: "SET NULL" });
 db.AcademicYear.hasMany(db.Aspirant, { onDelete: "SET NULL" });
 
-db.Result.belongsTo(db.Student, {
-  onDelete: "CASCADE",
-});
-db.Student.hasMany(db.Result, {
-  onDelete: "CASCADE",
-});
+db.Result.belongsTo(db.StudentTermPerformance, { onDelete: "CASCADE" });
+db.StudentTermPerformance.hasMany(db.Result, { onDelete: "CASCADE" });
 
 db.Result.belongsTo(db.Subject, {
   onDelete: "CASCADE",
@@ -175,20 +171,6 @@ db.Subject.hasMany(db.Result, {
   onDelete: "CASCADE",
 });
 
-db.Result.belongsTo(db.Term, {
-  onDelete: "SET NULL",
-});
-db.Term.hasMany(db.Result, {
-  onDelete: "SET NULL",
-});
-db.Result.belongsTo(db.Class, {
-  foreignKey: "resultClassId",
-  onDelete: "SET NULL",
-});
-db.Class.hasMany(db.Result, {
-  foreignKey: "resultClassId",
-  onDelete: "SET NULL",
-});
 
 db.ClassStats.belongsTo(db.Subject, {
   onDelete: "CASCADE",
