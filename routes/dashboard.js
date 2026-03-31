@@ -15,6 +15,7 @@ router.get("/profile", async (req, res) => {
     alert: req.flash("alert")[0] || "",
     form: req.flash("form")[0] || "",
     subjects: await require("../utils/getSubjectsByClass")(req.student.ClassId),
+    siteSettings: req.siteSettings,
   });
 });
 
@@ -31,6 +32,7 @@ router.get("/timetables", async (req, res) => {
     alert: req.flash("alert")[0] || "",
     days,
     schedule,
+    siteSettings: req.siteSettings,
   });
 });
 
@@ -83,6 +85,7 @@ router.get("/result", async (req, res) => {
     outOf,
     student: req.student,
     displayClass,
+    siteSettings: req.siteSettings,
   });
 });
 
@@ -127,6 +130,7 @@ router.get("/notifications", async (req, res) => {
     // Pass notifications to the EJS template
     res.render("dashboard/notifications", {
       notifications: userNotifications.Notifications,
+      siteSettings: req.siteSettings,
     });
   } catch (error) {
     console.log(error);
