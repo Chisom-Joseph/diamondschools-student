@@ -4,6 +4,7 @@ router.get("/sign-in", async (req, res) => {
   res.render("auth/signIn.ejs", {
     alert: req.flash("alert")[0] || "",
     form: req.flash("form")[0] || "",
+    siteSettings: req.siteSettings,
   });
 });
 router.post("/sign-in", require("../controllers/auth/signIn"));

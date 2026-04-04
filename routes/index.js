@@ -4,6 +4,7 @@ const loginVerifier = require("../middlewares/loginVerifire");
 const checkBlockStatus = require("../middlewares/checkBlockStatus");
 
 router.use(require("../middlewares/setCurrentPath"));
+router.use(require("../middlewares/setSiteSettings"));
 router.use(
   "/dashboard",
   loginVerifier,

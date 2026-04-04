@@ -5,9 +5,9 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="Responsive Student &amp; Dashboard Template based on Bootstrap 5">
+  <meta name="description" content="<%= siteSettings?.description || 'Diamond Schools Student Portal' %>">
   <meta name="author" content="StudentKit">
-  <meta name="keywords" content="studentkit, bootstrap, bootstrap 5, student, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web">
+  <meta name="keywords" content="<%= siteSettings?.keywords || 'student, dashboard, education' %>">
 
   <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.css" rel="stylesheet">
@@ -15,11 +15,11 @@
   <link href="/DataTables/datatables.min.css" rel="stylesheet">
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link rel="shortcut icon" href="/img/icons/icon-48x48.png" />
+  <link rel="shortcut icon" href="<%= siteSettings?.favicon || '/img/icons/icon-48x48.png' %>" />
 
   <link rel="canonical" href="https://demo-basic.studentkit.io/" />
 
-  <title>Diamond Schools Student</title>
+  <title><%= siteSettings?.title || 'Diamond Schools' %> - Student Portal</title>
 
   <link class="js-stylesheet" href="/css/light.css" rel="stylesheet">
   <link href="/css/app.css" rel="stylesheet">
@@ -34,7 +34,8 @@
     <nav id="sidebar" class="sidebar js-sidebar">
       <div class="sidebar-content js-simplebar">
         <a class="sidebar-brand" href="/">
-          <span class="align-middle">Student Dashboard</span>
+          <img src="<%= siteSettings?.logo || '/img/icons/icon-48x48.png' %>" alt="<%= siteSettings?.name || 'Logo' %>" style="height: 32px; margin-right: 8px;">
+          <span class="align-middle"><%= siteSettings?.name || 'Diamond Schools' %></span>
         </a>
 
         <ul class="sidebar-nav">
