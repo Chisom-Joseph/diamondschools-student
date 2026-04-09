@@ -153,10 +153,16 @@ router.get("/notifications", async (req, res) => {
   // Track seen status after response is sent (errors here won't affect the user)
   try {
     for (const b of unseenBroadcasts) {
-      await UserNotification.findOrCreate({
+      const existing = await UserNotification.findOne({
         where: { StudentId: studentId, NotificationId: b.id },
-        defaults: { seen: true },
       });
+      if (!existing) {
+        await UserNotification.create({
+          StudentId: studentId,
+          NotificationId: b.id,
+          seen: true,
+        });
+      }
     }
     await UserNotification.update(
       { seen: true },
