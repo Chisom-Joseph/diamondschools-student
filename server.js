@@ -24,16 +24,18 @@ app.use(require("./routes"));
 
 console.log("Waiting for database connection...");
 db.sequelize
-  .sync({ force: false, alter: false, benchmark: true })
-  .then(({ options, config }) => {
-    console.log(`Database connection sucessfull!`);
+  .authenticate()
+  .then(async () => {
+    console.log(`Database connection successful!`);
+    return db.sequelize.sync({ force: false, alter: false });
+  })
+  .then(() => {
+    const config = db.sequelize.config;
     console.table({
-      dialect: options.dialect,
+      dialect: config.dialect,
       database: config.database,
       database_user: config.username,
       database_host: config.host,
-      database_protocol: config.protocol,
-      database_port: config.port,
     });
     app.listen(PORT, () => {
       console.log(`Server is Up and Running on http://localhost:${PORT}/`);
