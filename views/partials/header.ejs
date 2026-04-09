@@ -48,6 +48,9 @@
             <a class="sidebar-link" href="/dashboard/notifications">
               <i class="align-middle" data-feather="bell"></i>
               <span class="align-middle">Notifications</span>
+              <% if (typeof unreadNotificationCount !== 'undefined' && unreadNotificationCount > 0) { %>
+              <span class="badge bg-danger ms-2"><%= unreadNotificationCount %></span>
+              <% } %>
             </a>
           </li>
 
