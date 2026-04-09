@@ -38,7 +38,9 @@ router.get("/timetables", async (req, res) => {
 
 // Profile
 router.get("/calendar", async (req, res) => {
-  res.render("dashboard/calendar");
+  res.render("dashboard/calendar", {
+    siteSettings: req.siteSettings,
+  });
 });
 
 // Profile
@@ -94,47 +96,74 @@ router.get("/notifications", async (req, res) => {
     UserNotification,
     Notification,
     Student,
-    AcademicYear,
   } = require("../models");
-  try {
-    // Assuming `req.user` contains the logged-in student
-    const studentId = req.student.id;
 
-    // Fetch notifications for the student
-    const userNotifications = await Student.findOne({
+  let notifications = [];
+  let unseenBroadcasts = [];
+  const studentId = req.student.id;
+
+  try {
+    // 1. Get broadcast notifications targeted at all students
+    const broadcasts = await Notification.findAll({
+      where: { targetAudience: 'all-students' },
+      order: [['createdAt', 'DESC']],
+      raw: true,
+    });
+
+    // 2. Get notifications linked to this student via UserNotification
+    //    (includes: legacy, specific, and previously-viewed broadcasts)
+    const [studentWithNotifications] = await Student.findAll({
       where: { id: studentId },
       include: [
         {
           model: Notification,
           through: {
-            model: UserNotification,
-            attributes: ["seen"], // Include the `seen` attribute
+            attributes: ["seen"],
           },
         },
       ],
     });
 
-    userNotifications.Notifications.forEach((notification) => {
-      notification.UserNotification.seen;
-      notification.seen = notification.UserNotification.seen;
-    });
+    const joinedNotifications = studentWithNotifications?.Notifications || [];
+    const joinedIds = new Set(joinedNotifications.map(n => n.id));
 
-    // Update seen status to true (optional, only when the student views the notification)
+    // 3. Merge: broadcasts not yet in joined set are unseen
+    unseenBroadcasts = broadcasts.filter(b => !joinedIds.has(b.id));
+    notifications = [
+      ...unseenBroadcasts.map(b => ({ ...b, seen: false })),
+      ...joinedNotifications.map(n => ({
+        id: n.id,
+        title: n.title,
+        message: n.message,
+        targetAudience: n.targetAudience,
+        createdAt: n.createdAt,
+        seen: n.UserNotification?.seen ?? false,
+      })),
+    ].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  } catch (error) {
+    console.log("Error fetching notifications:", error);
+  }
+
+  // Always render (even if fetching failed, show whatever we have)
+  res.render("dashboard/notifications", {
+    notifications,
+    siteSettings: req.siteSettings,
+  });
+
+  // Track seen status after response is sent (errors here won't affect the user)
+  try {
+    for (const b of unseenBroadcasts) {
+      await UserNotification.findOrCreate({
+        where: { StudentId: studentId, NotificationId: b.id },
+        defaults: { seen: true },
+      });
+    }
     await UserNotification.update(
       { seen: true },
       { where: { StudentId: studentId, seen: false } }
     );
-
-    console.log(userNotifications.Notifications);
-
-    // Pass notifications to the EJS template
-    res.render("dashboard/notifications", {
-      notifications: userNotifications.Notifications,
-      siteSettings: req.siteSettings,
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send("Server Error");
+  } catch (trackingError) {
+    console.log("Error tracking notification seen status:", trackingError);
   }
 });
 

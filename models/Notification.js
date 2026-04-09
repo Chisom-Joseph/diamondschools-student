@@ -17,6 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    targetAudience: {
+      type: DataTypes.ENUM('all-students', 'all-aspirants', 'all-teachers', 'specific-students', 'specific-aspirants', 'specific-teachers'),
+      allowNull: true,
+      defaultValue: null,
+    },
   });
 
   return Notification;
