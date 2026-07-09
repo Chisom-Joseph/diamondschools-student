@@ -8,7 +8,13 @@
     "watch:css": "npx postcss ./public/css/style.css -o ./public/dist/output.css --watch",
     "start": "concurrently \"npm run build:css\" \"node server.js\"",
     "devStart": "concurrently \"npm:watch:css\" \"nodemon server.js\"",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo",
+    "db:migrate:status": "sequelize-cli db:migrate:status",
+    "db:seed:all": "sequelize-cli db:seed:all",
+    "db:seed:undo": "sequelize-cli db:seed:undo"
   },
   "repository": {
     "type": "git",
