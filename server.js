@@ -2,7 +2,7 @@ require("dotenv").config();
 
 const express = require("express");
 const app = express();
-const PORT = 2394 || process.env.PORT;
+const PORT = process.env.PORT || 2394;
 const db = require("./models");
 const session = require("express-session");
 const flash = require("connect-flash");
