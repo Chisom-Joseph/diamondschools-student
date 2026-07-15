@@ -1,4 +1,4 @@
-const { UserNotification, Notification, Student } = require("../models");
+const { UserNotification, Notification, Sequelize } = require("../models");
 const { Op } = require("sequelize");
 
 module.exports = async (req, res, next) => {
@@ -10,44 +10,29 @@ module.exports = async (req, res, next) => {
 
     const studentId = req.student.id;
     const studentCreatedAt = req.student.createdAt;
-    let unreadCount = 0;
 
-    // 1. Get broadcast notifications targeted at all students created after student registration
-    const broadcasts = await Notification.findAll({
+    // 1. Count unread direct notifications
+    const unreadJoined = await UserNotification.count({
       where: {
-        targetAudience: 'all-students',
-        createdAt: { [Op.gte]: studentCreatedAt },
+        StudentId: studentId,
+        seen: false,
       },
-      raw: true,
     });
 
-    // 2. Get notifications linked to this student via UserNotification
-    const [studentWithNotifications] = await Student.findAll({
-      where: { id: studentId },
-      include: [
-        {
-          model: Notification,
-          through: {
-            attributes: ["seen"],
-          },
+    // 2. Count unseen broadcast notifications
+    const unseenBroadcastsCount = await Notification.count({
+      where: {
+        targetAudience: "all-students",
+        createdAt: { [Op.gte]: studentCreatedAt },
+        id: {
+          [Op.notIn]: Sequelize.literal(
+            `(SELECT NotificationId FROM UserNotifications WHERE StudentId = '${studentId}')`
+          ),
         },
-      ],
+      },
     });
 
-    const joinedNotifications = (studentWithNotifications?.Notifications || []).filter(
-      n => new Date(n.createdAt) >= new Date(studentCreatedAt)
-    );
-    const joinedIds = new Set(joinedNotifications.map(n => n.id));
-
-    // 3. Count unread broadcasts (not yet in joined set)
-    const unseenBroadcasts = broadcasts.filter(b => !joinedIds.has(b.id));
-    unreadCount += unseenBroadcasts.length;
-
-    // 4. Count unread joined notifications (seen = false)
-    const unreadJoined = joinedNotifications.filter(n => !n.UserNotification?.seen);
-    unreadCount += unreadJoined.length;
-
-    res.locals.unreadNotificationCount = unreadCount;
+    res.locals.unreadNotificationCount = unreadJoined + unseenBroadcastsCount;
   } catch (error) {
     console.error("Error counting unread notifications:", error);
     res.locals.unreadNotificationCount = 0;

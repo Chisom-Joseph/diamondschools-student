@@ -15,15 +15,34 @@ const defaults = {
   logoLight: "/assets/img/logo/logo-light.png",
 };
 
+let cachedSettings = null;
+let lastFetchTime = 0;
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
 module.exports = async () => {
+  const now = Date.now();
+  if (cachedSettings && (now - lastFetchTime) < CACHE_TTL) {
+    return cachedSettings;
+  }
+  
   try {
     const siteSettings = await SiteSettings.findOne({
       where: { uniqueKey: 1 },
     });
-    if (!siteSettings) return defaults;
-    return siteSettings.toJSON();
+    if (!siteSettings) {
+      cachedSettings = defaults;
+    } else {
+      cachedSettings = siteSettings.toJSON();
+    }
+    lastFetchTime = now;
+    return cachedSettings;
   } catch (error) {
     console.error("Error fetching site settings:", error);
-    return defaults;
+    return cachedSettings || defaults;
   }
+};
+
+module.exports.clearCache = () => {
+  cachedSettings = null;
+  lastFetchTime = 0;
 };
