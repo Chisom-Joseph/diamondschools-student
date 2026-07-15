@@ -33,10 +33,10 @@ const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   dialectOptions: {
     connectTimeout: 100000,
   },
-  polli: {
+  pool: {
     min: dbConfig.poll.min,
     max: dbConfig.poll.max,
-    aquire: dbConfig.poll.acquire,
+    acquire: dbConfig.poll.acquire,
     idle: dbConfig.poll.idle,
   },
 });
