@@ -72,10 +72,6 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    resultClassId: {
-      type: DataTypes.UUID,
-      allowNull: true,
-    },
     position: {
       type: DataTypes.INTEGER,
       allowNull: false,

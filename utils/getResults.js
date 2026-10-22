@@ -1,55 +1,60 @@
-const { Result, Subject, Student, ClassStats, StudentTermPerformance, Sequelize } = require("../models");
+const {
+  Result,
+  Subject,
+  Student,
+  ClassStats,
+  StudentTermPerformance,
+  Sequelize,
+} = require("../models");
 
 module.exports = async (termId, studentId) => {
   try {
     if (!termId || !studentId) return [];
-    const toOrdinal = require("./toOrdinal")
+    const toOrdinal = require("./toOrdinal");
 
-    const stp = await StudentTermPerformance.findOne({ where: { StudentId: studentId, TermId: termId } });
-    let results;
-    if (!stp) {
-      results = await Result.findAll({
-        include: [
-          { model: Subject, attributes: ["id", "name"] },
-          { model: StudentTermPerformance, where: { StudentId: studentId, TermId: termId }, attributes: ["ClassId", "id"] },
-        ],
-        order: [[Subject, "name", "ASC"]],
-      });
-    } else {
-      results = await Result.findAll({
-        where: { StudentTermPerformanceId: stp.id },
-        include: [{ model: Subject, attributes: ["id", "name"] }],
-        order: [[Subject, "name", "ASC"]],
-      });
-    }
+    const stps = await StudentTermPerformance.findAll({
+      where: { StudentId: studentId, TermId: termId },
+    });
+    if (stps.length === 0) return [];
 
-    if (results.length === 0) {
-      const legacyResults = await Result.findAll({
-        where: { StudentId: studentId, TermId: termId },
-        include: [{ model: Subject, attributes: ["id", "name"] }],
-        order: [[Subject, "name", "ASC"]],
-      })
-      if (legacyResults.length === 0) return []
-      results = legacyResults
-    }
+    const results = await Result.findAll({
+      where: {
+        StudentTermPerformanceId: {
+          [Sequelize.Op.in]: stps.map((s) => s.id),
+        },
+      },
+      include: [{ model: Subject, attributes: ["id", "name"] }],
+      order: [[Subject, "name", "ASC"]],
+    });
+
+    if (results.length === 0) return [];
+
+    const matchedStp =
+      stps.find((s) => s.id === results[0].StudentTermPerformanceId) ||
+      stps.find((s) => s.totalScore > 0) ||
+      stps[0];
 
     // Determine class at time of result; fallback to current student class
     const student = await Student.findByPk(studentId);
     const fallbackClassId = student ? student.ClassId : null;
-    const inferredClassIdFromJoin = (!stp && results[0] && results[0].StudentTermPerformance) ? results[0].StudentTermPerformance.ClassId : null;
-    const classId = (stp && stp.ClassId) || inferredClassIdFromJoin || fallbackClassId;
+    const classId = (matchedStp && matchedStp.ClassId) || fallbackClassId;
 
     // Fetch ClassStats for all subjects in the results in a single query
-    const subjectIds = results.map(r => r.SubjectId);
+    const subjectIds = results.map((r) => r.SubjectId);
     let classStatsList = [];
     if (subjectIds.length > 0) {
       classStatsList = await ClassStats.findAll({
         where: {
           ClassId: classId,
           TermId: termId,
-          SubjectId: { [Sequelize.Op.in]: subjectIds }
+          SubjectId: { [Sequelize.Op.in]: subjectIds },
         },
-        attributes: ["SubjectId", "classLowest", "classHighest", "classAverage"],
+        attributes: [
+          "SubjectId",
+          "classLowest",
+          "classHighest",
+          "classAverage",
+        ],
       });
     }
 
@@ -68,7 +73,7 @@ module.exports = async (termId, studentId) => {
         classAverage: null,
       };
 
-      if(result.position) result.position = toOrdinal(result.position)
+      if (result.position) result.position = toOrdinal(result.position);
       result.dataValues.resultClassId = classId;
     }
 
